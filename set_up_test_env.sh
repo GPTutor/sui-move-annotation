@@ -5,7 +5,7 @@ EXTENSIONS_DIR=".vscode-test/extensions"
 
 # Names of the folders to check
 FOLDER1="movebit.move-msl-syx-0.0.2"
-FOLDER2="movebit.move-msl-syx-0.0.2" # Note: This is the same as FOLDER1, is this intended?
+FOLDER2="movebit.sui-move-analyzer-1.1.3"
 
 # Check if both folders exist
 if [ -d "$EXTENSIONS_DIR/$FOLDER1" ] && [ -d "$EXTENSIONS_DIR/$FOLDER2" ]; then
