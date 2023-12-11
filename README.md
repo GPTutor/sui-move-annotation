@@ -29,20 +29,22 @@ FILE_PATH="YOUR_MOVE_FILE" OUTPUT_FILE_PATH="YOUR_OUPUT_PATH" npm run test
 
 ## How to install at Ubuntu server?
 
-1. Install Cargo and Sui Move Analyzer following [this tutorial](https://blog.sui.io/move-analyzer-tutorial/)
 
-2. Install dependencies
-
-```bash
-npm install
-```
-
-3. install xvfb-run
+1. install xvfb-run
 
 ```bash
 sudo apt-get update
 sudo apt-get install -y xvfb
 ```
+
+2. Install Cargo and Sui Move Analyzer following [this tutorial](https://blog.sui.io/move-analyzer-tutorial/)
+
+3. Install dependencies
+
+```bash
+npm install
+```
+
 
 1. Execute by 
 
