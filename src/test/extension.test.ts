@@ -37,9 +37,15 @@ suite("Extension Test Suite", () => {
         "../move_analyzer_context.js"
       );
       // Define the configuration object for move_analyzer_context
+      const whereisOutput = child_process.execSync("whereis move-analyzer", {
+        encoding: "utf8",
+      });
+      const pathMatches = whereisOutput.match(/move-analyzer:\s*(\S+)/);
+      const moveAnalyzerPath = pathMatches ? pathMatches[1] : "";
+
       const configuration = {
-        server: { path: "/Users/eason/.cargo/bin/move-analyzer" },
-        serverPath: "/Users/eason/.cargo/bin/move-analyzer",
+        server: { path: moveAnalyzerPath },
+        serverPath: moveAnalyzerPath,
         inlay: {
           hints: {
             parameter: true,
@@ -55,6 +61,7 @@ suite("Extension Test Suite", () => {
         configuration
       );
       // Start the client for move_analyzer_context
+      console.log(move_analyzer_context);
       console.log("move_analyzer_context.startClient");
       await move_analyzer_context.startClient();
       const client = move_analyzer_context.getClient();
@@ -64,7 +71,7 @@ suite("Extension Test Suite", () => {
       if (client === undefined) {
         return undefined;
       }
-
+      console.log("Before Hint");
       // Send a request for inlay hints using the client
       const hints = await client.sendRequest("textDocument/inlayHint", {
         range: [
@@ -73,6 +80,7 @@ suite("Extension Test Suite", () => {
         ],
         textDocument: { uri: document.uri.toString() },
       });
+      console.log("hints");
 
       // Log the line count and the first hint
       console.log(document.lineCount, hints[0]);

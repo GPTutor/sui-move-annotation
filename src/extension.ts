@@ -4,6 +4,7 @@ import * as vscode from "vscode";
 import { window } from "vscode";
 
 import * as fs from "fs";
+import * as child_process from "child_process";
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -27,6 +28,7 @@ export function activate(context: vscode.ExtensionContext) {
   let annotate = vscode.commands.registerCommand(
     "sui-move-annotation.annotate",
     async (path: string = "") => {
+      console.log("sui-move-annotation.annotate");
       // The code you place here will be executed every time your command is executed
       // Display a message box to the user
       const editor = vscode.window.activeTextEditor;
@@ -43,15 +45,21 @@ export function activate(context: vscode.ExtensionContext) {
       }
       const languageId = document.languageId;
       // Check if the languageId is "move"
-      if (languageId == "move") {
+      if (languageId == "move" || true) {
         // Import the move_analyzer_context module
         const move_analyzer_context_1 = await import(
           "./move_analyzer_context.js"
         );
         // Define the configuration object for move_analyzer_context
+        const whereisOutput = child_process.execSync("whereis move-analyzer", {
+          encoding: "utf8",
+        });
+        const pathMatches = whereisOutput.match(/move-analyzer:\s*(\S+)/);
+        const moveAnalyzerPath = pathMatches ? pathMatches[1] : "";
+
         const configuration = {
-          server: { path: "/Users/eason/.cargo/bin/move-analyzer" },
-          serverPath: "/Users/eason/.cargo/bin/move-analyzer",
+          server: { path: moveAnalyzerPath },
+          serverPath: moveAnalyzerPath,
           inlay: {
             hints: {
               parameter: true,
@@ -74,6 +82,7 @@ export function activate(context: vscode.ExtensionContext) {
         }
 
         // Send a request for inlay hints using the client
+        console.log("Before Hint");
         const hints = await client.sendRequest("textDocument/inlayHint", {
           range: [
             { line: 0, character: 0 },
@@ -81,6 +90,7 @@ export function activate(context: vscode.ExtensionContext) {
           ],
           textDocument: { uri: document.uri.toString() },
         });
+        console.log(hints);
 
         // Log the line count and the first hint
         console.log(document.lineCount, hints[0]);
