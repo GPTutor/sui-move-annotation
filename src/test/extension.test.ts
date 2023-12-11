@@ -80,7 +80,7 @@ suite("Extension Test Suite", () => {
         ],
         textDocument: { uri: document.uri.toString() },
       });
-      console.log("hints");
+      console.log("hints", hints);
 
       // Log the line count and the first hint
       console.log(document.lineCount, hints[0]);

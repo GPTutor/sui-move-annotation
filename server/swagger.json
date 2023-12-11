@@ -1,0 +1,60 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Example API",
+    "version": "1.0.0",
+    "description": "This is a simple API to demonstrate Swagger integration with an Express application"
+  },
+  "servers": [
+    {
+      "url": "https://move-annotate-backend.gptutor.tools/",
+      "description": "Local server"
+    }
+  ],
+  "paths": {
+    "/api/v1/move-annotate": {
+      "post": {
+        "summary": "Receive and process move code",
+        "description": "This endpoint receives a move code and processes it.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "move": {
+                    "type": "string",
+                    "description": "Move code to be processed",
+                    "multiLine": true
+                  }
+                },
+                "required": ["move"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Move code received and processed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "move": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
