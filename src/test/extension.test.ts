@@ -5,10 +5,14 @@ import * as assert from "assert";
 import * as vscode from "vscode";
 import { window } from "vscode";
 import * as fs from "fs";
+
+import * as child_process from "child_process";
 // import * as myExtension from '../../extension';
 
 suite("Extension Test Suite", () => {
   vscode.window.showInformationMessage("Start all tests.");
+
+  child_process.execSync("bash set_up_test_env.sh");
 
   test("Sample test", async () => {
     let target_file_path =
@@ -108,7 +112,7 @@ suite("Extension Test Suite", () => {
           }
         }
       }
-      console.log(lines.join("\n"));
+      // console.log(lines.join("\n"));
       // await sleep(20000);
       if (output_file_path) {
         await fs.writeFile(

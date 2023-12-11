@@ -1,0 +1,74 @@
+{
+	"name": "move-msl-syx",
+	"version": "0.0.2",
+	"description": "dependence of sui-move-analyzer 2.0",
+	"publisher": "Movebit",
+	"displayName": "Move-Msl-Syx",
+	"categories": [
+		"Programming Languages",
+		"Snippets",
+		"Other"
+	],
+	"scripts": {},
+	"engines": {
+		"vscode": "^1.5.1"
+	},
+	"activationEvents": [
+		"onLanguage:move",
+		"workspaceContains:Move.toml"
+	],
+	"main": "./extension.js",
+	"contributes": {
+		"languages": [
+			{
+				"id": "move",
+				"aliases": [
+					"Move"
+				],
+				"extensions": [
+					".move"
+				],
+				"configuration": "./language-configuration.json"
+			}
+		],
+		"grammars": [
+			{
+				"language": "move",
+				"scopeName": "source.move",
+				"path": "./syntaxes/move.tmLanguage.json"
+			}
+		]
+	},
+	"icon": "img/logo.256.png",
+	"galleryBanner": {
+		"color": "#FFFFFF",
+		"theme": "light"
+	},
+	"keywords": [
+		"move"
+	],
+	"author": "Movebit",
+	"license": "MIT",
+	"devDependencies": {
+		"@types/vscode": "^1.5.1",
+		"@types/glob": "^8.1.0",
+		"@types/mocha": "^10.0.1",
+		"@types/node": "16.x",
+		"eslint": "^8.34.0",
+		"glob": "^8.1.0",
+		"mocha": "^10.2.0",
+		"typescript": "^4.9.5",
+		"@vscode/test-electron": "^2.2.3"
+	},
+	"__metadata": {
+		"id": "a8958fa0-dd73-4338-a17b-386c1f907067",
+		"publisherId": "48c80ba8-0b2f-46f4-af1d-77234cf34f26",
+		"publisherDisplayName": "MoveBit",
+		"targetPlatform": "undefined",
+		"updated": false,
+		"isPreReleaseVersion": false,
+		"installedTimestamp": 1702286734056,
+		"pinned": false,
+		"preRelease": false
+	}
+}

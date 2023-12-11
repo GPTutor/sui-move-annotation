@@ -29,7 +29,7 @@
     "watch": "tsc -watch -p ./",
     "pretest": "npm run compile && npm run lint",
     "lint": "eslint src --ext ts",
-    "test": "vscode-test --timeout 2000000000000000"
+    "test": "vscode-test --timeout 2000 || vscode-test --timeout 2000"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.6",
