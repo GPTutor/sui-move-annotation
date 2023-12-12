@@ -35,7 +35,6 @@ app.post("/api/v1/move-annotate", (req, res) => {
       console.error(`exec error: ${error}. ${stdout}, ${stderr}`);
       return res.status(500).send({ message: "Error executing bash command" });
     }
-    console.error(`exec error: ${error}. ${stdout}, ${stderr}`);
 
     // Step 3: Read the contents of the output file
     const newMove = fs.readFileSync(outputFilePath, "utf8");

@@ -39,14 +39,22 @@ sudo apt-get install -y xvfb
 
 2. Install Cargo and Sui Move Analyzer following [this tutorial](https://blog.sui.io/move-analyzer-tutorial/)
 
-3. Install dependencies
+3. Install Sui-Cli following [this tutorial](https://docs.sui.io/guides/developer/getting-started/sui-install)
+
+4. Execute the sui code to install sui library
+
+```bash
+cd move_env_for_api && sui move test
+```
+
+5. Install dependencies
 
 ```bash
 npm install
 ```
 
 
-1. Execute by 
+6. Execute by 
 
 ```bash
 FILE_PATH="INPUT" OUTPUT_FILE_PATH="OUTPUT" xvfb-run npm run test
