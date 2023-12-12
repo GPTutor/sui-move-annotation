@@ -2,7 +2,7 @@
 
 Annotate `.move` file by sui-move-analyzer.
 
-Execute the script using command
+Execute the script using the command
 ```
 FILE_PATH="YOUR_MOVE_FILE" OUTPUT_FILE_PATH="YOUR_OUPUT_PATH" npm run test
 ```
@@ -11,7 +11,10 @@ FILE_PATH="YOUR_MOVE_FILE" OUTPUT_FILE_PATH="YOUR_OUPUT_PATH" npm run test
 
 To prepare the training data for Sui-Move language, you may use this script to convert move code to annotated move code.
 
-![Alt text](/assets/images/image2.png)
+Execute the script of this repo to convert Sui-move code to annotated sui-move code for future training.
+
+<img width="1038" alt="image" src="https://github.com/GPTutor/sui-move-annotation/assets/43432631/1fc0b8a6-b0cc-4e3d-9da5-66b8cc9f08fe">
+
 
 ## Set up for server
 You may use it as API by running the following command:
