@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.0",
   "info": {
-    "title": "Example API",
+    "title": "Sui Move Annotation API",
     "version": "1.0.0",
     "description": "This is a simple API to demonstrate Swagger integration with an Express application"
   },
@@ -15,7 +15,7 @@
     "/api/v1/move-annotate": {
       "post": {
         "summary": "Receive and process move code",
-        "description": "This endpoint receives a move code and processes it.",
+        "description": "This endpoint receives a move code and processes it by Sui-Move Analyzer. It return the processed move code.",
         "requestBody": {
           "required": true,
           "content": {
