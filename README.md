@@ -13,7 +13,8 @@ To prepare the training data for Sui-Move language, you may use this script to c
 
 Execute the script of this repo to convert Sui-move code to annotated sui-move code for future training.
 
-<img width="1038" alt="image" src="https://github.com/GPTutor/sui-move-annotation/assets/43432631/1fc0b8a6-b0cc-4e3d-9da5-66b8cc9f08fe">
+<img width="1045" alt="image" src="https://github.com/GPTutor/sui-move-annotation/assets/43432631/0c8ef5a0-ec51-4a66-ae13-2b47221b15f2">
+
 
 
 ## Set up for server
