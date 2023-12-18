@@ -31,7 +31,7 @@ suite("Extension Test Suite", () => {
     const languageId = document.languageId;
     console.log(languageId);
     // Check if the languageId is "move"
-    if (languageId == "move" || true) {
+    if (languageId === "move" || true) {
       // Import the move_analyzer_context module
       const move_analyzer_context_1 = await import(
         "../move_analyzer_context.js"

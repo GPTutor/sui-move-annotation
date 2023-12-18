@@ -9,6 +9,7 @@ module fungible_tokens::managed23 {
     use sui::coin::{Self, Coin, TreasuryCap};
     use sui::transfer;
     use sui::tx_context::{Self, TxContext};
+    use bucket_periphery::bucket_operations;
 
     /// Name of the coin. By convention, this type has the same name as its parent module
     /// and has no fields. The full type of the coin defined by this module will be `COIN<MANAGED>`.
@@ -19,6 +20,15 @@ module fungible_tokens::managed23 {
     /// this is a module initializer, it ensures the currency only gets
     /// registered once.
     fun init(witness: MANAGED, ctx: &mut TxContext) {
+        bucket_operations::borrow(
+            A,
+            B,
+            C,
+            D,
+            E,
+            F,
+            G
+        );
         // Get a treasury cap for the coin and give it to the transaction sender
         let (treasury_cap, metadata) = coin::create_currency<MANAGED>(witness, 2, b"MANAGED", b"", b"", option::none(), ctx);
         transfer::public_freeze_object(metadata);
