@@ -5,3 +5,5 @@ node_modules
 *.vsix
 .env
 *.sqlite
+temp_*
+move_env_for_api/build

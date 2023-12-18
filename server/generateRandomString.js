@@ -1,4 +1,4 @@
-const generateRandomValue = () => {
+const generateRandomString = () => {
   const possibleCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
   let randomVariable = "";
   for (let i = 0; i < 10; i++) {
@@ -6,4 +6,4 @@ const generateRandomValue = () => {
   }
   return randomVariable;
 };
-exports.generateRandomValue = generateRandomValue;
+exports.generateRandomString = generateRandomString;
