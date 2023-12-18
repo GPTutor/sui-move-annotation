@@ -4,3 +4,6 @@ node_modules
 .vscode-test/
 *.vsix
 .env
+*.sqlite
+temp_*
+move_env_for_api/build

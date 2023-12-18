@@ -5,8 +5,9 @@ published-at = "0x0"
 
 [dependencies]
 Sui = { git = "https://github.com/MystenLabs/sui.git", subdir = "crates/sui-framework/packages/sui-framework", rev = "framework/testnet" }
+bucket_periphery = { git = "https://github.com/Bucket-Protocol/v1-periphery.git", subdir = "", rev = "main" }
 
 [addresses]
-fungible_coin = "0x0"
+fungible_tokens = "0x0"
 abc = "0x0"
 rc = "0x0"
