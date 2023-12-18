@@ -1,9 +1,20 @@
+const sqlite3 = require('sqlite3').verbose();
+const db = new sqlite3.Database('mydb.sqlite');
+
+db.run(`CREATE TABLE IF NOT EXISTS moves (
+  id TEXT PRIMARY KEY,
+  move TEXT,
+  annotatedMove TEXT,
+  annotated BOOLEAN DEFAULT FALSE
+)`);
+
 // Import necessary modules
 const cors = require("cors");
 const express = require("express");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
 const path = require("path");
+
 require("dotenv").config();
 
 // Create an Express application
@@ -17,51 +28,24 @@ app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 // Define a simple route
 const fs = require("fs");
 const { exec, execSync } = require("child_process");
-
-// Generate a random variable name
-const generateRandomVariable = () => {
-  const possibleCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-  let randomVariable = "";
-  for (let i = 0; i < 10; i++) {
-    randomVariable += possibleCharacters.charAt(Math.floor(Math.random() * possibleCharacters.length));
-  }
-  return randomVariable;
-};
-
-const randomVarName = generateRandomVariable();
-
-// Express route handler
+const { generateRandomValue } = require('./generateRandomValue');
 
 app.post("/api/v1/move-annotate", (req, res) => {
   const { move } = req.body;
+  const randomVarName = generateRandomVariable();
 
-  // Step 1: Write the 'move' string to a file
-  const filePath = path.resolve(`move_env_for_api/sources/${randomVarName}.move`);
-  fs.writeFileSync(filePath, move);
+  // 插入數據到數據庫
+  db.run('INSERT INTO moves (id, move) VALUES (?, ?)', [randomVarName, move], function(err) {
+    if (err) {
+      return console.error(err.message);
+    }
 
-  // Step 2: Execute the bash command
-  const outputFilePath = path.resolve(`move_env_for_api/sources/${randomVarName}.movea`);
-  const command = `FILE_PATH="${filePath}" OUTPUT_FILE_PATH="${outputFilePath}" xvfb-run -a npm run test`;
-
-  try {
-    execSync(command, { stdio: 'inherit' });
-    // Step 3: Read the contents of the output file
-    const newMove = fs.readFileSync(outputFilePath, "utf8");
-
-    // Step 4: Delete the files
-    fs.unlinkSync(filePath);
-    fs.unlinkSync(outputFilePath);
-    // execSync(`rm ${filePath} ${outputFilePath}`, { stdio: 'inherit' });
-
-    // Send a response back to the client
+    // 告知客戶端操作成功
     res.status(200).send({
-      message: "Move code received and processed successfully",
-      move: newMove,
+      message: "Move code received and stored successfully",
+      id: randomVarName
     });
-  } catch (error) {
-    console.error(`execSync error: ${error}`);
-    res.status(500).send({ message: "Error executing bash command" });
-  }
+  });
 });
 
 // Start the server
