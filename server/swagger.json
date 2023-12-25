@@ -12,7 +12,7 @@
     }
   ],
   "paths": {
-    "/api/v1/move-annotate": {
+    "/api/v1/annotate-move": {
       "post": {
         "summary": "Receive and process move code",
         "description": "This endpoint receives a move code and processes it by Sui-Move Analyzer. It return the processed move code.",
@@ -64,13 +64,234 @@
                   "example1": {
                     "value": {
                       "message": "Move code processed successfully",
-                      "move": "// Copyright (c) Mysten Labs, Inc.\n// SPDX-License-Identifier: Apache-2.0\n\n/// Example coin with a trusted manager responsible for minting/burning (e.g., a stablecoin)\n/// By convention, modules defining custom coin types use upper case names, in contrast to\n/// ordinary modules, which use camel case.\nmodule fungible_tokens::managed {\n    use std::option;\n    use sui::coin::{Self, Coin, TreasuryCap};\n    use sui::transfer;\n    use sui::tx_context::{Self, TxContext};\n\n    /// Name of the coin. By convention, this type has the same name as its parent module\n    /// and has no fields. The full type of the coin defined by this module will be `COIN<MANAGED>`.\n    struct MANAGED has drop {}\n\n    #[allow(unused_function)]\n    /// Register the managed currency to acquire its `TreasuryCap`. Because\n    /// this is a module initializer, it ensures the currency only gets\n    /// registered once.\n    fun init(witness: MANAGED, ctx: &mut TxContext) {\n        // Get a treasury cap for the coin and give it to the transaction sender\n        let (treasury_cap, metadata) = coin::create_currency<MANAGED>(witness, decimals: 2, symbol: b\"MANAGED\", name: b\"\", description: b\"\", icon_url: option::none(), ctx);\n        transfer::public_freeze_object(obj: metadata);\n        transfer::public_transfer(obj: treasury_cap, recipient: tx_context::sender(self: ctx))\n    }\n\n    /// Manager can mint new coins\n    public entry fun mint(\n        treasury_cap: &mut TreasuryCap<MANAGED>, amount: u64, recipient: address, ctx: &mut TxContext\n    ) {\n        coin::mint_and_transfer(c: treasury_cap, amount, recipient, ctx)\n    }\n\n    /// Manager can burn coins\n    public entry fun burn(treasury_cap: &mut TreasuryCap<MANAGED>, coin: Coin<MANAGED>) {\n        coin::burn(cap: treasury_cap, c: coin);\n    }\n\n    #[test_only]\n    /// Wrapper of module initializer for testing\n    public fun test_init(ctx: &mut TxContext) {\n        init(witness: MANAGED {}, ctx)\n    }\n}\n"
+                      "annotatedMove": "// Copyright (c) Mysten Labs, Inc.\n// SPDX-License-Identifier: Apache-2.0\n\n/// Example coin with a trusted manager responsible for minting/burning (e.g., a stablecoin)\n/// By convention, modules defining custom coin types use upper case names, in contrast to\n/// ordinary modules, which use camel case.\nmodule fungible_tokens::managed {\n    use std::option;\n    use sui::coin::{Self, Coin, TreasuryCap};\n    use sui::transfer;\n    use sui::tx_context::{Self, TxContext};\n\n    /// Name of the coin. By convention, this type has the same name as its parent module\n    /// and has no fields. The full type of the coin defined by this module will be `COIN<MANAGED>`.\n    struct MANAGED has drop {}\n\n    #[allow(unused_function)]\n    /// Register the managed currency to acquire its `TreasuryCap`. Because\n    /// this is a module initializer, it ensures the currency only gets\n    /// registered once.\n    fun init(witness: MANAGED, ctx: &mut TxContext) {\n        // Get a treasury cap for the coin and give it to the transaction sender\n        let (treasury_cap, metadata) = coin::create_currency<MANAGED>(witness, decimals: 2, symbol: b\"MANAGED\", name: b\"\", description: b\"\", icon_url: option::none(), ctx);\n        transfer::public_freeze_object(obj: metadata);\n        transfer::public_transfer(obj: treasury_cap, recipient: tx_context::sender(self: ctx))\n    }\n\n    /// Manager can mint new coins\n    public entry fun mint(\n        treasury_cap: &mut TreasuryCap<MANAGED>, amount: u64, recipient: address, ctx: &mut TxContext\n    ) {\n        coin::mint_and_transfer(c: treasury_cap, amount, recipient, ctx)\n    }\n\n    /// Manager can burn coins\n    public entry fun burn(treasury_cap: &mut TreasuryCap<MANAGED>, coin: Coin<MANAGED>) {\n        coin::burn(cap: treasury_cap, c: coin);\n    }\n\n    #[test_only]\n    /// Wrapper of module initializer for testing\n    public fun test_init(ctx: &mut TxContext) {\n        init(witness: MANAGED {}, ctx)\n    }\n}\n"
                     },
                     "summary": "Example response after annotated by Sui-Move Analyzer"
                   }
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/v1/create-move-annotation-task": {
+      "post": {
+        "tags": [
+          "advanced"
+        ],
+        "summary": "Receive and processing move code",
+        "description": "This endpoint receives a move code and processes it by Sui-Move Analyzer. It return the processed move code.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "move": {
+                    "type": "string",
+                    "description": "Move code to be processed",
+                    "multiLine": true
+                  }
+                },
+                "required": [
+                  "move"
+                ]
+              },
+              "examples": {
+                "example1": {
+                  "value": {
+                    "move": "// Copyright (c) Mysten Labs, Inc.\n// SPDX-License-Identifier: Apache-2.0\n\n/// Example coin with a trusted manager responsible for minting/burning (e.g., a stablecoin)\n/// By convention, modules defining custom coin types use upper case names, in contrast to\n/// ordinary modules, which use camel case.\nmodule fungible_tokens::managed {\n    use std::option;\n    use sui::coin::{Self, Coin, TreasuryCap};\n    use sui::transfer;\n    use sui::tx_context::{Self, TxContext};\n\n    /// Name of the coin. By convention, this type has the same name as its parent module\n    /// and has no fields. The full type of the coin defined by this module will be `COIN<MANAGED>`.\n    struct MANAGED has drop {}\n\n    #[allow(unused_function)]\n    /// Register the managed currency to acquire its `TreasuryCap`. Because\n    /// this is a module initializer, it ensures the currency only gets\n    /// registered once.\n    fun init(witness: MANAGED, ctx: &mut TxContext) {\n        // Get a treasury cap for the coin and give it to the transaction sender\n        let (treasury_cap, metadata) = coin::create_currency<MANAGED>(witness, 2, b\"MANAGED\", b\"\", b\"\", option::none(), ctx);\n        transfer::public_freeze_object(metadata);\n        transfer::public_transfer(treasury_cap, tx_context::sender(ctx))\n    }\n\n    /// Manager can mint new coins\n    public entry fun mint(\n        treasury_cap: &mut TreasuryCap<MANAGED>, amount: u64, recipient: address, ctx: &mut TxContext\n    ) {\n        coin::mint_and_transfer(treasury_cap, amount, recipient, ctx)\n    }\n\n    /// Manager can burn coins\n    public entry fun burn(treasury_cap: &mut TreasuryCap<MANAGED>, coin: Coin<MANAGED>) {\n        coin::burn(treasury_cap, coin);\n    }\n\n    #[test_only]\n    /// Wrapper of module initializer for testing\n    public fun test_init(ctx: &mut TxContext) {\n        init(MANAGED {}, ctx)\n    }\n}\n"
+                  },
+                  "summary": "Example Move Smart Contract for Managed Coin."
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Move code received and processing",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    },
+                    "move": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "example1": {
+                    "value": {
+                      "message": "Move code received and start processing",
+                      "id": "lltwmahcCs"
+                    },
+                    "summary": "Example response after annotated by Sui-Move Analyzer"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/move-remove-annotate": {
+      "post": {
+        "summary": "Remove Type Annotations from Code",
+        "description": "This endpoint removes type annotations from the given code.",
+        "requestBody": {
+          "description": "Code with type annotations",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "move": {
+                    "type": "string",
+                    "description": "Code with type annotations"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Annotation removal successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Move code received and remove annotation successfully"
+                    },
+                    "move": {
+                      "type": "string",
+                      "description": "Processed code without annotations"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/get-annotated-move": {
+      "get": {
+        "tags": [
+          "advanced"
+        ],
+        "summary": "Get Annotated Move",
+        "description": "Retrieves an annotated move from the database",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Unique identifier of the chess move"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Annotated move retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Annotated Move found"
+                    },
+                    "annotatedMove": {
+                      "type": "string",
+                      "example": "// Copyright (c) Mysten Labs, Inc.\n// SPDX-License-Identifier: Apache-2.0\n\n/// Example coin with a trusted manager responsible for minting/burning (e.g., a stablecoin)\n/// By convention, modules defining custom coin types use upper case names, in contrast to\n/// ordinary modules, which use camel case.\nmodule fungible_tokens::managed {\n    use std::option;\n    use sui::coin::{Self, Coin, TreasuryCap};\n    use sui::transfer;\n    use sui::tx_context::{Self, TxContext};\n\n    /// Name of the coin. By convention, this type has the same name as its parent module\n    /// and has no fields. The full type of the coin defined by this module will be `COIN<MANAGED>`.\n    struct MANAGED has drop {}\n\n    #[allow(unused_function)]\n    /// Register the managed currency to acquire its `TreasuryCap`. Because\n    /// this is a module initializer, it ensures the currency only gets\n    /// registered once.\n    fun init(witness: MANAGED, ctx: &mut TxContext) {\n        // Get a treasury cap for the coin and give it to the transaction sender\n        let (treasury_cap, metadata) = coin::create_currency<MANAGED>(witness, decimals: 2, symbol: b\"MANAGED\", name: b\"\", description: b\"\", icon_url: option::none(), ctx);\n        transfer::public_freeze_object(obj: metadata);\n        transfer::public_transfer(obj: treasury_cap, recipient: tx_context::sender(self: ctx))\n    }\n\n    /// Manager can mint new coins\n    public entry fun mint(\n        treasury_cap: &mut TreasuryCap<MANAGED>, amount: u64, recipient: address, ctx: &mut TxContext\n    ) {\n        coin::mint_and_transfer(c: treasury_cap, amount, recipient, ctx)\n    }\n\n    /// Manager can burn coins\n    public entry fun burn(treasury_cap: &mut TreasuryCap<MANAGED>, coin: Coin<MANAGED>) {\n        coin::burn(cap: treasury_cap, c: coin);\n    }\n\n    #[test_only]\n    /// Wrapper of module initializer for testing\n    public fun test_init(ctx: &mut TxContext) {\n        init(witness: MANAGED {}, ctx)\n    }\n}\n"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request, ID is required"
+          },
+          "404": {
+            "description": "Move not found"
+          },
+          "500": {
+            "description": "Error querying the database"
+          }
+        }
+      }
+    },
+    "/api/v1/get-and-delete-annotated-move": {
+      "get": {
+        "tags": [
+          "advanced"
+        ],
+        "summary": "Get Annotated Move",
+        "description": "Retrieves an annotated move from the database",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Unique identifier of the chess move"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Annotated move retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "integer",
+                      "example": 200
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Annotated Move found"
+                    },
+                    "annotatedMove": {
+                      "type": "string",
+                      "example": "// Copyright (c) Mysten Labs, Inc.\n// SPDX-License-Identifier: Apache-2.0\n\n/// Example coin with a trusted manager responsible for minting/burning (e.g., a stablecoin)\n/// By convention, modules defining custom coin types use upper case names, in contrast to\n/// ordinary modules, which use camel case.\nmodule fungible_tokens::managed {\n    use std::option;\n    use sui::coin::{Self, Coin, TreasuryCap};\n    use sui::transfer;\n    use sui::tx_context::{Self, TxContext};\n\n    /// Name of the coin. By convention, this type has the same name as its parent module\n    /// and has no fields. The full type of the coin defined by this module will be `COIN<MANAGED>`.\n    struct MANAGED has drop {}\n\n    #[allow(unused_function)]\n    /// Register the managed currency to acquire its `TreasuryCap`. Because\n    /// this is a module initializer, it ensures the currency only gets\n    /// registered once.\n    fun init(witness: MANAGED, ctx: &mut TxContext) {\n        // Get a treasury cap for the coin and give it to the transaction sender\n        let (treasury_cap, metadata) = coin::create_currency<MANAGED>(witness, decimals: 2, symbol: b\"MANAGED\", name: b\"\", description: b\"\", icon_url: option::none(), ctx);\n        transfer::public_freeze_object(obj: metadata);\n        transfer::public_transfer(obj: treasury_cap, recipient: tx_context::sender(self: ctx))\n    }\n\n    /// Manager can mint new coins\n    public entry fun mint(\n        treasury_cap: &mut TreasuryCap<MANAGED>, amount: u64, recipient: address, ctx: &mut TxContext\n    ) {\n        coin::mint_and_transfer(c: treasury_cap, amount, recipient, ctx)\n    }\n\n    /// Manager can burn coins\n    public entry fun burn(treasury_cap: &mut TreasuryCap<MANAGED>, coin: Coin<MANAGED>) {\n        coin::burn(cap: treasury_cap, c: coin);\n    }\n\n    #[test_only]\n    /// Wrapper of module initializer for testing\n    public fun test_init(ctx: &mut TxContext) {\n        init(witness: MANAGED {}, ctx)\n    }\n}\n"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request, ID is required"
+          },
+          "404": {
+            "description": "Move not found"
+          },
+          "500": {
+            "description": "Error querying the database"
           }
         }
       }

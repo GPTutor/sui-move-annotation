@@ -44,6 +44,7 @@
     "@vscode/test-electron": "^2.3.8",
     "eslint": "^8.54.0",
     "nodemon": "^3.0.2",
+    "swagger-autogen": "^2.23.7",
     "typescript": "^5.3.2"
   },
   "dependencies": {
