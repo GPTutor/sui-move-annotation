@@ -4,6 +4,20 @@ const { exec } = require("child_process");
 const util = require("util");
 
 const execAsync = util.promisify(exec);
+
+function getSourceCommand() {
+  const shell = process.env.SHELL;
+
+  if (shell.includes("bash")) {
+    return "source ~/.bashrc";
+  } else if (shell.includes("zsh")) {
+    return "source ~/.zshrc";
+  }
+  // Add more conditions if you want to support other shells
+
+  return ""; // Return empty string if the shell is not recognized
+}
+
 async function startMoveAnnotation(move) {
   const randomString = generateRandomString();
 
@@ -22,8 +36,9 @@ async function startMoveAnnotation(move) {
   });
 
   let session_name = "move_annotate";
-  await execAsync(
-    `tmux has-session -t ${session_name} 2>/dev/null || tmux new-session -d -s ${session_name} "cd ${process.cwd()} && xvfb-run -a npm run test"`
+  let sourceCmd = getSourceCommand();
+  let output = await execAsync(
+    `tmux has-session -t ${session_name} 2>/dev/null || tmux new-session -d -s ${session_name} "${sourceCmd} && cd ${process.cwd()} && xvfb-run -a npm run test"`
   );
 
   return randomString;

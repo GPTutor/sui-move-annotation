@@ -34,6 +34,9 @@ app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 const annotateMove = require("./api/v1/annotate-move");
 app.use(annotateMove);
 
+const moveRemoveAnnotate = require("./api/v1/move-remove-annotate");
+app.use(moveRemoveAnnotate);
+
 const startMoveAnnotate = require("./api/v1/create-move-annotation-task");
 app.use(startMoveAnnotate);
 
